@@ -11,17 +11,23 @@ var getHint = function(secret, guess) {
         if (secret[i] === guess[i]) {
             A++;
         } else {
-           map[secret[i]] = map[secret[i]] + 1 || 1;  
-        }
-    }
-    for (let i = 0; i < guess.length; i++) {
-        if (secret[i] !== guess[i]) {
-            if (map[guess[i]] > 0){
+            if (map[secret[i]] < 0) {
                 B++;
-                map[guess[i]]--;
             }
+            if (map[guess[i]] > 0) {
+                B++;
+            }
+            if (!map[secret[i]]) {
+                map[secret[i]] = 0
+            }
+            if (!map[guess[i]]) {
+                map[guess[i]] = 0
+            }
+           map[secret[i]]++
+            map[guess[i]]--
         }
     }
+
 
     return A + 'A' + B + 'B';
 };
