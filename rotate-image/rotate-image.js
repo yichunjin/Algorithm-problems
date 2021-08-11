@@ -11,11 +11,7 @@ var rotate = function(matrix) {
     }
   }
   for (let i = 0; i < matrix.length; i++) {
-      for (let j = 0; j < matrix[i].length / 2; j++) {
-          let cur = matrix[i][j];
-          matrix[i][j] = matrix[i][matrix[i].length - j - 1];
-          matrix[i][matrix[i].length - j - 1] = cur;
-      }
+        matrix[i] = matrix[i].reverse();
   }
   return matrix;
 };
