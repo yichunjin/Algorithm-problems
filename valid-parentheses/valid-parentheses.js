@@ -3,13 +3,13 @@
  * @return {boolean}
  */
 var isValid = function(s) {
-    const parentheses = {'(':')', '[':']','{':'}'}
+    const par = {'(':')', '{':'}', '[':']'};
     let stack = [];
-    for (let i = 0; i < s.length; i++) {
-        if (parentheses[s[i]]) {
-            stack.push(s[i]);
+    for (let i of s) {
+        if (par[i]) {
+            stack.push(i)
         } else {
-            if (parentheses[stack.pop()] !== s[i]) {
+            if (par[stack.pop()] !== i) {
                 return false;
             }
         }
