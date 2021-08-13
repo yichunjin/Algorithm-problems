@@ -6,9 +6,34 @@
  * @return {number[]}
  */
 var sortTransformedArray = function(nums, a, b, c) {
-    for (let i = 0; i < nums.length; i++) {
-        let n = nums[i]
-        nums[i] = a*n*n + b*n + c;
+    const quad = (n) => {
+        return a*n*n + b*n + c;
     }
-    return nums.sort((a, b) => a - b)
+    const res = new Array(nums.length);
+    let start = 0;
+    let end = nums.length - 1;
+    while (start < end) {
+        if (a > 0) {
+            for (let i = nums.length - 1; i >= 0; i--) {
+                if (quad(nums[start]) > quad(nums[end])) {
+                    res[i] = quad(nums[start])
+                    start++
+                } else {
+                    res[i] = quad(nums[end])
+                    end--
+                }
+            }
+        } else {
+                for (let i = 0; i < nums.length; i++) {
+                    if (quad(nums[start]) < quad(nums[end])) {
+                        res[i] = quad(nums[start])
+                        start++
+                    } else {
+                        res[i] = quad(nums[end])
+                        end--
+                    }
+                }
+        } 
+    }
+    return res;
 };
