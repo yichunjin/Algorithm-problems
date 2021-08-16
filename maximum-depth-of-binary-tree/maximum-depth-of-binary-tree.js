@@ -11,20 +11,21 @@
  * @return {number}
  */
 var maxDepth = function(root) {
-    let max = 0;
-    if (root === null) {
-        return max;
+    if (!root) {
+        return 0;
     }
-    let queue = [root];
-    while (queue.length > 0) {
+    let max = 0;
+    let q = new Queue();
+    q.enqueue(root);
+    while (q.size() > 0) {
         max++;
-        for (let i = queue.length; i > 0; i--) {
-            let cur = queue.shift();
-            if (cur.left) {
-                queue.push(cur.left);
+        for (let i = q.size() -1; i >=0; i--) {
+            let cur = q.dequeue();
+            if (cur.left !== null) {
+                q.enqueue(cur.left);
             }
-            if (cur.right) {
-                queue.push(cur.right);
+            if (cur.right !== null) {
+                q.enqueue(cur.right);
             }
         }
     }
