@@ -41,54 +41,18 @@
  * @return {number}
  */
 var depthSumInverse = function(nestedList) {
-    let maxDepth = 0;
-    
-    const findDepth = (input, depth) => {
-        let res = [];
-        maxDepth = Math.max(maxDepth, depth);
-        input.forEach((i) => {
-            if(i.isInteger()) {
-                res.push([i.getInteger(), depth]);
+    let unWeighted = 0, weighted = 0;
+    let q = [...nestedList]
+    while (q.length > 0) {
+        for (let i = q.length; i > 0; i--) {
+            let e = q.shift()
+            if (e.isInteger()) {
+                unWeighted += e.getInteger();
             } else {
-               res = res.concat(findDepth(i.getList(), depth + 1)) 
+                q.push(...e.getList());
             }
-        })
-        return res;
+        }
+        weighted += unWeighted;
     }
-    const arr = findDepth(nestedList, 1);
-    
-    let sum = 0;
-    for (let i of arr) {
-        const [num, d] = i;
-        sum += num * (maxDepth - d + 1)
-    }
-    return sum;
-    /*
-    var depthSumInverse = function(nestedList) {
-    
-    let maxDepth = 0
-    
-    let traverse = (nl, depth = 1) => {
-        let arr = []
-        maxDepth = Math.max(maxDepth, depth)
-        nl.forEach(ele => {
-            if(ele.isInteger()) {
-                arr.push([ele.getInteger(), depth])
-            } else {
-                arr = arr.concat(traverse(ele.getList(), depth + 1))
-            }
-        })
-        return arr
-    }
-    
-    const arr = traverse(nestedList)
-
-    let sum = 0
-    for(let i = 0; i < arr.length; i++) {
-        const [num, d] = arr[i]
-        sum += num * (maxDepth - d + 1)
-    }
-    return sum
-};
-    */
+    return weighted;
 };
