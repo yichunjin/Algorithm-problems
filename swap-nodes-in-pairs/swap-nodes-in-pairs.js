@@ -13,9 +13,9 @@ var swapPairs = function(head) {
     if (!head || !head.next) {
         return head;
     }
-    let start = head.next;
-    let node = head;
-    node.next = swapPairs(start.next);
-    start.next = node;
-    return start;
+    let newHead = head.next;
+    let nextHead = head.next.next;
+    head.next.next = head;
+    head.next = swapPairs(nextHead);
+    return newHead;
 };
