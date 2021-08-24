@@ -13,18 +13,18 @@
  * @return {string}
  */
 var serialize = function(root) {
-    let res = [];
+    const result = [];
     const dfs = (node) => {
         if (!node) {
-            res.push('N');
+            result.push('n');
             return;
         }
-        res.push(node.val.toString())
+        result.push(node.val.toString());
         dfs(node.left);
         dfs(node.right);
     }
     dfs(root);
-    return res.join(',');
+    return result.join(',');
 };
 
 /**
@@ -34,14 +34,14 @@ var serialize = function(root) {
  * @return {TreeNode}
  */
 var deserialize = function(data) {
-    let vals = data.split(',');
+    const values = data.split(',');
     let i = 0;
     const dfs = () => {
-        if (vals[i] === 'N') {
+        if (values[i] === 'n') {
             i++;
             return null;
         }
-        let node = new TreeNode(Number(vals[i]));
+        const node = new TreeNode(Number(values[i]));
         i++;
         node.left = dfs();
         node.right = dfs();
