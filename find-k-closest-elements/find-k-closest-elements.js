@@ -5,17 +5,17 @@
  * @return {number[]}
  */
 var findClosestElements = function(arr, k, x) {
-    let start = 0, end = arr.length - k;
-    while (start < end) {
-        let mid = Math.floor((start + end) / 2);
+    let l = 0, r = arr.length - k;
+    while ( l < r) {
+        let mid = Math.floor((l + r) / 2 );
         if (x - arr[mid] > arr[mid + k] - x) {
-            start = mid + 1;
+            l = mid + 1;
         } else {
-            end = mid;
+            r = mid;
         }
     }
-    let result = [];
-    for (let i = start; i < start + k; i++) {
+    const result = [];
+    for (let i = l; i < l + k; i++) {
         result.push(arr[i]);
     }
     return result;
