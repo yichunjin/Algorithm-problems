@@ -3,28 +3,25 @@
  * @return {number}
  */
 var minMeetingRooms = function(intervals) {
-    let startTime = [];
-    let endTime = [];
-    for (let i of intervals) {
-        startTime.push(i[0]);
-        endTime.push(i[1]);
+    let res = 0;
+    let start = [], end = [];
+    for (let interval of intervals ) {
+        start.push(interval[0]);
+        end.push(interval[1]);
     }
-    startTime.sort((a, b) => a- b);
-    endTime.sort((a, b) => a - b);
-    
-    let s = 0;
-    let e = 0;
-    let max = 0;
-    let count = 0;
-    while (s < startTime.length) {
-        if (startTime[s] < endTime[e]) {
-            count++;
-            s++;
+    start.sort((a, b) => a - b);
+    end.sort((a, b) => a - b);
+    let i = 0, j = 0;
+    let cur = 0;
+    while (i < start.length && j < end.length) { 
+        if (start[i] < end[j]) {
+            cur++;
+            i++;
+            res = Math.max(res, cur);
         } else {
-            count--;
-            e++;
+            cur--;
+            j++;
         }
-        max = Math.max(max, count);
     }
-    return max;
+    return res;
 };
