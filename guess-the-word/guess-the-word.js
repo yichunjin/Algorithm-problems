@@ -47,24 +47,24 @@ var findSecretWord = function(wordlist, master) {
         }
         
         let miniMax = [null, Infinity];
-        // for (let w of wordlist) {
-        //     if (!guessed[w]) {
-        //         if (!count[w]) {
-        //             count[w] = 0;
-        //         }
-        //         if (count[w] < miniMax[1]) {
-        //             miniMax = [w, count[w]];
-        //         }
-        //     }
-        // }
-        let randomIdx = getRandomIntInclusive(0, wordlist.length - 1);
-        
-        n = master.guess(wordlist[randomIdx]);
-        guessed[wordlist[randomIdx]] = true;
+        for (let w of wordlist) {
+            if (!guessed[w]) {
+                if (!count[w]) {
+                    count[w] = 0;
+                }
+                if (count[w] <= miniMax[1]) {
+                    miniMax = [w, count[w]];
+                }
+            }
+        }
+        // let randomIdx = getRandomIntInclusive(0, wordlist.length - 1);
+        let guess = miniMax[0];
+        n = master.guess(guess);
+        guessed[guess] = true;
         
         const wordList2 = [];
         for (let w of wordlist) {
-            if (match(wordlist[randomIdx], w) === n) {
+            if (match(guess, w) === n) {
                 wordList2.push(w);
             }
         }
