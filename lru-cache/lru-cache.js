@@ -1,49 +1,49 @@
 /**
  * @param {number} capacity
  */
-var ListNode = function (key, val) {
-  this.key = key;
-  this.val = val;
-  this.next = this.prev = null;
-};
 
-
+var ListNode = function(key, val, prev = null, next = null) {
+    this.key = key;
+    this.val = val;
+    this.prev = prev;
+    this.next = next;
+}
 
 var LRUCache = function(capacity) {
-    this.storage = {};
     this.size = 0;
     this.limit = capacity;
-    this.left = new ListNode(0, 0);
+    this.storage = {};
+    this.left = new ListNode(0,0);
     this.right = new ListNode(0, 0);
     this.left.next = this.right;
     this.right.prev = this.left;
+    
 };
 
 /** 
  * @param {number} key
  * @return {number}
  */
-
-LRUCache.prototype.remove = function(node) {
+LRUCache.prototype.delete = function(node) {
     let prev = node.prev, next = node.next;
     prev.next = next;
     next.prev = prev;
-};
+}
 
-LRUCache.prototype.insert = function(node) {
+LRUCache.prototype.addNode = function(node) {
     let prev = this.right.prev;
-    let right = this.right;
     prev.next = node;
-    right.prev = node;
-    node.next = right;
     node.prev = prev;
-};
+    node.next = this.right;
+    this.right.prev = node;
+}
 
 LRUCache.prototype.get = function(key) {
-    if (this.storage[key]) {
-        this.remove(this.storage[key]);
-        this.insert(this.storage[key]);
-        return this.storage[key].val;
+    if (key in this.storage) {
+        let node = this.storage[key];
+        this.delete(node);
+        this.addNode(node);
+        return node.val;
     }
     return -1;
 };
@@ -53,21 +53,27 @@ LRUCache.prototype.get = function(key) {
  * @param {number} value
  * @return {void}
  */
-
 LRUCache.prototype.put = function(key, value) {
-    let node = new ListNode(key, value);
-    if (this.storage[key]) {
-        this.remove(this.storage[key]);
+    let cur = new ListNode(key, value);
+    if (key in this.storage) {
+        let node = this.storage[key];
+        this.delete(node);
         this.size--;
     }
-    this.storage[key] = node;
-    this.insert(node);
+    this.addNode(cur);
+    this.storage[key] = cur;
     this.size++;
-    
     if (this.size > this.limit) {
-        let lru = this.left.next;
-        this.remove(lru);
+        let node = this.left.next;
+        this.delete(node);
         this.size--;
-        delete this.storage[lru.key];
+        delete this.storage[node.key];
     }
 };
+
+/** 
+ * Your LRUCache object will be instantiated and called as such:
+ * var obj = new LRUCache(capacity)
+ * var param_1 = obj.get(key)
+ * obj.put(key,value)
+ */
