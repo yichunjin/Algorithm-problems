@@ -4,12 +4,9 @@
  * @param {number} maxNumbers
  */
 var PhoneDirectory = function(maxNumbers) {
-    this.q = new Queue();
-    this.asigned = new Set();
-    for (let i = 0; i < maxNumbers; i++) {
-        this.q.enqueue(i);
-    }
     this.max = maxNumbers;
+    this.bool = new Array(this.max).fill(false);
+    this.n = 0;
 };
 
 /**
@@ -18,12 +15,14 @@ var PhoneDirectory = function(maxNumbers) {
  * @return {number}
  */
 PhoneDirectory.prototype.get = function() {
-    if (this.q.size() === 0) {
-        return -1;
+    for (let i = this.n; i < this.bool.length; i++) {
+        if (!this.bool[i]) {
+            this.bool[i] = true;
+            this.n = i + 1;
+            return i;
+        }
     }
-    let number = this.q.dequeue();
-    this.asigned.add(number);
-    return number;
+    return -1;
 };
 
 /**
@@ -33,7 +32,7 @@ PhoneDirectory.prototype.get = function() {
  */
 PhoneDirectory.prototype.check = function(number) {
     if (number < this.max) {
-        if (!this.asigned.has(number)) {
+        if (!this.bool[number]) {
             return true;
         }
     }
@@ -46,9 +45,11 @@ PhoneDirectory.prototype.check = function(number) {
  * @return {void}
  */
 PhoneDirectory.prototype.release = function(number) {
-    if (this.asigned.has(number)) {
-        this.asigned.delete(number);
-        this.q.enqueue(number);
+    if (number < this.max) {
+        this.bool[number] = false;
+        if (this.n > number) {
+            this.n = number;
+        }
     }
 };
 
