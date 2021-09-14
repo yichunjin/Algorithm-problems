@@ -7,35 +7,36 @@ var canFinish = function(numCourses, prerequisites) {
     if (prerequisites.length === 0) {
         return true;
     }
-    let preMap = {};
-    for (let i = 0; i < numCourses; i++) {
-        preMap[i] = [];
+    
+    const visited = new Set();
+    const preCourse = new Array(numCourses).fill(null).map((a) => new Array);
+    
+    for (let p of prerequisites) {
+        preCourse[p[0]].push(p[1]);
     }
-    for (let i of prerequisites) {
-        preMap[i[0]].push(i[1]);
-    }
-    let visited = new Set();
-    const checkVisit = (course) => {
+    
+    const dfs = (course) => {
         if (visited.has(course)) {
             return false;
         }
-        if (preMap[course].length === 0) {
+        if (preCourse[course].length === 0) {
             return true;
         }
         visited.add(course);
-        for (let i of preMap[course]) {
-            if (!checkVisit(i)) {
-                return false;
+        for (let c of preCourse[course]) {
+            if (!dfs(c)) {
+                return false;   
             }
         }
-        preMap[course] = [];
+        preCourse[course] = [];
         visited.delete(course);
         return true;
     }
     for (let i = 0; i < numCourses; i++) {
-        if (!checkVisit(i)) {
-            return false;
-        }
+           if (!dfs(i)) {
+               return false;
+           }
     }
+
     return true;
 };
