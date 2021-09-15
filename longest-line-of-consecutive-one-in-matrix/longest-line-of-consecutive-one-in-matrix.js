@@ -3,43 +3,27 @@
  * @return {number}
  */
 var longestLine = function(mat) {
-    let r = mat.length, c = mat[0].length;
+    if (mat.length === 0) { return 0; }
+    
     let result = 0;
-    
-    const count = (i, j) => {
-        let res = [0, 0, 0, 0];
-        if (i - 1 >= 0 && j - 1 >= 0) {
-            res = [mat[i - 1][j][0], mat[i - 1][j - 1][1], mat[i][j - 1][2], 0];
-            if ( j + 1 < c) {
-                res[3] = mat[i - 1][j + 1][3]
-            }
-        } else if (i - 1 >= 0) {
-            res[0] = mat[i - 1][j][0];
-            if ( j + 1 < c) {
-                res[3] = mat[i - 1][j + 1][3]
-            }
-        } else if (j - 1 >= 0) {
-            res[2] = mat[i][j - 1][2];
-        }
-        
-        if (mat[i][j] === 1) {
-            for (let i = 0; i < res.length; i++) {
-                res[i] += 1
-            }
-        }
-        return res;
-    }
-    
-    for (let i = 0; i < r; i++) {
-        for (let j = 0; j < c; j++) {
-            if (mat[i][j] === 0) {
-                mat[i][j] = [0,0,0, 0]
+    const dp = new Array(mat[0].length).fill(null).map((a) => new Array(4));
+    for (let i = 0; i < mat.length; i++) {
+        let old = 0;
+        for (let j = 0; j < mat[i].length; j++) {
+            if (mat[i][j] === 1) {
+                dp[j][0] = j > 0 ? dp[j - 1][0] + 1 : 1;
+                dp[j][1] = i > 0 ? dp[j][1] + 1 : 1;
+                let prev = dp[j][2];
+                dp[j][2] = ( i > 0 && j > 0) ? old + 1 : 1;
+                old = prev;
+                dp[j][3] = (i > 0 && j < mat[0].length - 1) ? dp[j + 1][3] + 1 : 1;
+                result = Math.max(result, Math.max(Math.max(dp[j][0], dp[j][1]), Math.max(dp[j][2], dp[j][3])));
             } else {
-                mat[i][j] = count(i, j);
-                result = Math.max(result, Math.max(...mat[i][j]))
+                old = dp[j][2];
+                dp[j][0] = dp[j][1] = dp[j][2] = dp[j][3] = 0;
             }
+            
         }
     }
-    
-    return result
+    return result;
 };
