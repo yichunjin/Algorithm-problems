@@ -14,16 +14,11 @@ var levelOrder = function(root) {
     if (!root) {
         return [];
     }
-    let res = [];
-    let q = [root];
+    let result = [], q = [root];
     while (q.length > 0) {
         let cur = [];
-        let l = q.length;
-        for (let i = 0; i < l; i++) {
+        for (let i = q.length - 1; i >= 0; i--) {
             let node = q.shift();
-            if (!node) {
-                continue;
-            }
             cur.push(node.val);
             if (node.left) {
                 q.push(node.left);
@@ -32,9 +27,8 @@ var levelOrder = function(root) {
                 q.push(node.right);
             }
         }
-        if (cur.length > 0) {
-            res.push(cur);
-        }
+        result.push(cur);
     }
-    return res;
+    return result;
+    
 };
