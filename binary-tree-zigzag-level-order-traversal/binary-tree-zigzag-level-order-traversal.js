@@ -14,13 +14,11 @@ var zigzagLevelOrder = function(root) {
     if (!root) {
         return [];
     }
-    let res = [];
-    let q = [root, null];
+    let result = [], q = [root, null], order = true;
     let levelList = [];
-    let order = true;
     while (q.length > 0) {
-       let cur = q.shift();
-        if (cur) {
+        let cur = q.shift();
+        if (cur !== null) {
             if (order) {
                 levelList.push(cur.val);
             } else {
@@ -30,18 +28,16 @@ var zigzagLevelOrder = function(root) {
                 q.push(cur.left);
             }
             if (cur.right) {
-                q.push(cur.right)
+                q.push(cur.right);
             }
         } else {
-            res.push(levelList);
-            levelList = [];
+            result.push(levelList);
             if (q.length > 0) {
-              q.push(null);  
+                q.push(null);
             }
+            levelList = [];
             order = !order;
         }
-
-        
     }
-    return res;
+    return result;
 };
