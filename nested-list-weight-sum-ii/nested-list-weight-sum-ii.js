@@ -41,15 +41,16 @@
  * @return {number}
  */
 var depthSumInverse = function(nestedList) {
-    let unWeighted = 0, weighted = 0;
-    let q = [...nestedList]
+    let weighted = 0, unWeighted = 0;
+    let q = [...nestedList];
     while (q.length > 0) {
-        for (let i = q.length; i > 0; i--) {
-            let e = q.shift()
-            if (e.isInteger()) {
-                unWeighted += e.getInteger();
+        let l = q.length;
+        for (let i = 0; i < l; i++) {
+            let cur = q.shift();
+            if (cur.isInteger()) {
+                unWeighted += cur.getInteger();
             } else {
-                q.push(...e.getList());
+                q.push(...cur.getList());
             }
         }
         weighted += unWeighted;
