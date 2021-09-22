@@ -40,19 +40,14 @@
  * @param {NestedInteger[]} nestedList
  * @return {number}
  */
-var depthSum = function(nestedList) {
+var depthSum = function(nestedList, level = 1) {
     let sum = 0;
-    const dfs = (elem, depth) => {
-        if (elem.isInteger()) {
-            sum += elem.getInteger() * depth;
+    for (let i of nestedList) {
+        if (i.isInteger()) {
+            sum += i.getInteger() * level;
         } else {
-            elem.getList().forEach((e) => {
-                dfs(e, depth + 1)
-            })
+            sum += depthSum(i.getList(), level + 1);
         }
     }
-    nestedList.forEach((e) => {
-        dfs(e, 1)
-    })
     return sum;
 };
