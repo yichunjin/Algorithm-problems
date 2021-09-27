@@ -12,18 +12,19 @@
  * @return {boolean}
  */
 var isSubtree = function(root, subRoot) {
-    const sameTree = (node1, node2) => {
-        if (!node1 || !node2) {
-            return !node1 && !node2;
-        }
-        if (node1.val !== node2.val) {
-            return false;
-        }
-        return sameTree(node1.left, node2.left) && sameTree(node1.right, node2.right);
-    }
-    
-    if (root === null) {
+    if (!root) {
         return !subRoot;
     }
-    return sameTree(root, subRoot) || isSubtree(root.left, subRoot) || isSubtree(root.right, subRoot);
+
+    return (isSameTree(root, subRoot) || isSubtree(root.left, subRoot) || isSubtree(root.right, subRoot));
 };
+
+const isSameTree = (root1, root2) => {
+    if (!root1 || !root2) {
+        return !root1 && !root2;
+    }
+    if (root1.val !== root2.val) {
+        return false;
+    }
+    return (isSameTree(root1.left, root2.left) && isSameTree(root1.right, root2.right));
+}
